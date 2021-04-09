@@ -1,8 +1,8 @@
 import React, { useEffect, useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { userOptionSelector } from '../../features/userSelectionSlice';
+import { userSaveData } from '../../features/userDataSlice';
 
 const TextFieldStyles = styled.div`
   & > input {
@@ -35,14 +35,22 @@ const Label = styled.p`
 `;
 
 const TextField = ({ elem }) => {
-  const { id: elementId, component, label, validation, required, value } = elem;
+  const { id: elemId, component, label, validation, required, value } = elem;
   const [fieldValue, setFieldValue] = useState(value);
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
   const theme = useContext(ThemeContext);
-  const data = useSelector(userOptionSelector);
-  useEffect(() => {}, [fieldValue]);
+  useEffect(() => {
+    dispatch(
+      userSaveData({
+        elemId,
+        id,
+        value: fieldValue,
+        isRequired: required,
+      })
+    );
+  }, [fieldValue]);
   return (
     <TextFieldStyles {...theme}>
       <Label {...theme} htmlFor={`${component}${id}`}>

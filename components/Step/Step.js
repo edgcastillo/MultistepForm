@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import { componentFactory } from '../../utils/componentFactory';
@@ -17,6 +17,7 @@ import {
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
 import { userOptionSelector } from '../../features/userSelectionSlice';
+import { validateData, userDataSelector } from '../../features/userDataSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -57,8 +58,10 @@ const StepActionButtons = styled.div`
 
 const Step = ({ elem }) => {
   // Redux Selectors
+  const dispatch = useDispatch();
   const breadcrumbData = useSelector(selectBreadcrumbData);
   const userSelection = useSelector(userOptionSelector);
+  const userData = useSelector(userDataSelector);
   const count = useSelector(selectPageCount);
 
   // Data from Redux Selectors

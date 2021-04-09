@@ -29,7 +29,6 @@ const Label = styled.p`
 `;
 
 const SelectField = ({ elem }) => {
-  console.log(elem);
   const theme = useContext(ThemeContext);
   return (
     <Container>
