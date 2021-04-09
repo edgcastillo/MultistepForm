@@ -7,6 +7,7 @@ import Radio from '../Radio/Radio';
 import TextField from '../TextField/TextField';
 import { BigCircleStep } from '../Circle/Circle';
 import TextArea from '../TextArea/TextArea';
+import DateField from '../DateField/DateField';
 
 const Components = {
   header: Header,
@@ -15,6 +16,7 @@ const Components = {
   textField: TextField,
   circle: BigCircleStep,
   textarea: TextArea,
+  dateField: DateField,
 };
 
 export const Component = (elem) => {

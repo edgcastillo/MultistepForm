@@ -137,6 +137,21 @@ export const data = {
             },
             {
               id: Math.floor(Math.random() * 1000),
+              component: 'dateField',
+              label: 'Date',
+              validation: null,
+              required: true,
+            },
+            {
+              id: Math.floor(Math.random() * 1000),
+              component: 'textField',
+              label: 'Formation City',
+              value: '',
+              validation: null,
+              required: true,
+            },
+            {
+              id: Math.floor(Math.random() * 1000),
               component: 'textField',
               label: 'Tax ID',
               value: '',
@@ -174,54 +189,3 @@ export const data = {
     ],
   },
 };
-
-// answerB: {
-//   questions: [
-//     {
-//       id: Math.floor(Math.random() * 1000),
-//       component: 'textField',
-//       label: 'Name',
-//       validation: null,
-//       required: true,
-//     },
-//     {
-//       id: Math.floor(Math.random() * 1000),
-//       component: 'textField',
-//       label: 'Last name',
-//       validation: null,
-//       required: true,
-//     },
-//     {
-//       id: Math.floor(Math.random() * 1000),
-//       component: 'textField',
-//       label: 'Tax ID',
-//       validation: null,
-//       required: true,
-//     },
-//   ],
-// },
-// answerB: {
-//   questions: [
-//     {
-//       id: Math.floor(Math.random() * 1000),
-//       component: 'textField',
-//       label: 'Name',
-//       validation: null,
-//       required: true,
-//     },
-//     {
-//       id: Math.floor(Math.random() * 1000),
-//       component: 'textField',
-//       label: 'Last name',
-//       validation: null,
-//       required: true,
-//     },
-//     {
-//       id: Math.floor(Math.random() * 1000),
-//       component: 'textField',
-//       label: 'Tax ID',
-//       validation: null,
-//       required: true,
-//     },
-//   ],
-// },

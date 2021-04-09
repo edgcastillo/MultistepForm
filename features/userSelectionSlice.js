@@ -2,10 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const userSelectionSlice = createSlice({
   name: 'userSelection',
-  initialState: {},
+  initialState: {
+    userChoice: '',
+    data: [],
+  },
   reducers: {
     userStepOption: (state, { payload }) => {
-      state[payload.step] = payload.value;
+      if (payload.value) {
+        state.data.push({ id: payload.step, value: payload.value });
+      }
       state.userChoice = payload.value;
     },
     saveStepAction: (state, { payload }) => {
@@ -14,7 +19,7 @@ export const userSelectionSlice = createSlice({
   },
 });
 
-export const { userStepOption, saveStepAction } = userSelectionSlice.actions;
+export const { userStepOption } = userSelectionSlice.actions;
 
 export const userOptionSelector = (state) => state.userSelection;
 

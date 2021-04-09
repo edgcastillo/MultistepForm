@@ -1,5 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import {
+  userStepOption,
+  userOptionSelector,
+} from '../../features/userSelectionSlice';
 
 const TextFieldStyles = styled.div`
   & > input {
@@ -17,6 +23,13 @@ const TextFieldStyles = styled.div`
       border: 2px solid ${({ active }) => active};
     }
   }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 50000s ease-in-out 0s,
+      color 5000s ease-in-out 0s;
+  }
 `;
 
 const Label = styled.p`
@@ -25,10 +38,17 @@ const Label = styled.p`
 `;
 
 const TextField = ({ elem }) => {
-  const { id, component, label, validation, required, value } = elem;
+  const { id: elementId, component, label, validation, required, value } = elem;
   const [fieldValue, setFieldValue] = useState(value);
-  // TODO: validation for later
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { id } = router.query;
   const theme = useContext(ThemeContext);
+  const data = useSelector(userOptionSelector);
+  useEffect(() => {
+    // console.log(data);
+    // dispatch(userStepOption({ step: id, value: fieldValue }));
+  }, [fieldValue]);
   return (
     <TextFieldStyles {...theme}>
       <Label {...theme} htmlFor={`${component}${id}`}>
@@ -38,7 +58,7 @@ const TextField = ({ elem }) => {
         type="text"
         value={fieldValue}
         name={`${component}${id}`}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => setFieldValue(e.target.value)}
       />
     </TextFieldStyles>
   );

@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import styled, { css, ThemeContext } from "styled-components";
-import PersonIcon from "@material-ui/icons/Person";
+import { useContext } from 'react';
+import styled, { css, ThemeContext } from 'styled-components';
+import PersonIcon from '@material-ui/icons/Person';
 
 // TODO: This could be another button, maybe refactor later
 
@@ -28,6 +28,24 @@ const BigCircleStepStyles = styled.div`
     }
   }
 `;
+
+const SmallCircleStyles = styled.div`
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background: ${({ background }) => background};
+  border: 2px solid ${({ border }) => border};
+  ${(props) =>
+    props.activeStep &&
+    css`
+      background: ${({ active }) => active};
+    `};
+`;
+
+export const SmallCircleStep = ({ activeStep }) => {
+  const theme = useContext(ThemeContext);
+  return <SmallCircleStyles {...theme} activeStep={activeStep} />;
+};
 
 export const BigCircleStep = ({ activeStep }) => {
   const theme = useContext(ThemeContext);

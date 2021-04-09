@@ -8,20 +8,22 @@ import { useSelector } from 'react-redux';
 import { componentFactory } from '../../utils/componentFactory';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import { FormNextButton, FormBackButton } from '../Button/Button';
+import { devices } from '../MediaQueries';
 
 // Redux Actions and Selectors
 import {
   selectPageCount,
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
-import {
-  userOptionSelector,
-  saveStepAction,
-} from '../../features/userSelectionSlice';
+import { userOptionSelector } from '../../features/userSelectionSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
   grid-template-columns: 350px 1fr;
+
+  @media ${devices.medium} {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const FormSection = styled.div`
@@ -51,10 +53,13 @@ const Step = ({ elem }) => {
   const { userChoice } = userSelection;
   const { pageCount } = count;
 
-  const theme = useContext(ThemeContext);
+  // NextJS
   const router = useRouter();
   const { id } = router.query;
+
+  // Variables
   const pageIndex = parseInt(id);
+  const theme = useContext(ThemeContext);
   const nextPage = pageCount === pageIndex ? pageIndex : pageIndex + 1;
   const backPage = pageCount <= 0 ? pageIndex : pageIndex - 1;
   const buttonText =

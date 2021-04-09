@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext, css } from 'styled-components';
-import { BigCircleStep } from '../Circle/Circle';
+import { BigCircleStep, SmallCircleStep } from '../Circle/Circle';
+import { devices } from '../MediaQueries';
 
 const BreadcrumbSection = styled.section`
   height: 100%;
@@ -9,6 +10,10 @@ const BreadcrumbSection = styled.section`
   gap: 50px;
   border-right: 1px solid ${({ border }) => border};
   margin-right: 50px;
+
+  @media ${devices.medium} {
+    display: none;
+  }
 `;
 
 const BreadcrumbElement = styled.div`
@@ -51,6 +56,12 @@ const BreadcrumbElement = styled.div`
   & > .circle-section {
     z-index: 1;
   }
+
+  & > .small-circle-section {
+    position: absolute;
+    left: 293px;
+    top: 15px;
+  }
 `;
 
 const Breadcrumb = ({ activeId, data }) => {
@@ -74,7 +85,10 @@ const Breadcrumb = ({ activeId, data }) => {
                 <p>{step.subtext}</p>
               </div>
               <div className="circle-section">
-                <BigCircleStep activeStep={active} />
+                <BigCircleStep activeStep={active} link={step.id} />
+              </div>
+              <div className="small-circle-section">
+                <SmallCircleStep activeStep={active} link={step.id} />
               </div>
             </BreadcrumbElement>
           );
