@@ -1,5 +1,8 @@
-import React, { useContext, useState } from "react";
-import styled, { ThemeContext, css } from "styled-components";
+import React, { useContext, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
+import { userStepOption } from '../../features/userSelectionSlice';
+import styled, { ThemeContext, css } from 'styled-components';
 
 const Legend = styled.p`
   font-size: 18px;
@@ -36,16 +39,22 @@ const Input = styled.input`
 `;
 
 const Radio = ({ elem }) => {
-  const [isChecked, setChecked] = useState(null);
+  const dispatch = useDispatch();
+  const [value, setValue] = useState(null);
+  const router = useRouter();
+  const { id } = router.query;
   const theme = useContext(ThemeContext);
+  useEffect(() => {
+    dispatch(userStepOption({ step: id, value }));
+  }, [value]);
   const handleChange = (e) => {
-    setChecked(e.target.value);
+    setValue(e.target.value);
   };
   return (
     <React.Fragment>
       <Legend {...theme}>{elem.text}</Legend>
       {elem.options.map((option, i) => {
-        const checked = isChecked === option.value;
+        const checked = value === option.value;
         return (
           <Label {...theme} checked={checked} key={`${option.value}${i}`}>
             <Input

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import styled, { ThemeContext, css } from "styled-components";
-import { BigCircleStep } from "../Circle/Circle";
+import React, { useContext } from 'react';
+import styled, { ThemeContext, css } from 'styled-components';
+import { BigCircleStep } from '../Circle/Circle';
 
 const BreadcrumbSection = styled.section`
   height: 100%;
@@ -22,7 +22,7 @@ const BreadcrumbElement = styled.div`
     grid-template-rows: 1fr 1fr;
     & > h4 {
       justify-self: end;
-      color: ${({ primary }) => primary};
+      color: ${(props) => (props.selected ? props.primary : props.secondary)};
       margin: 0;
     }
     & > p {
@@ -37,7 +37,7 @@ const BreadcrumbElement = styled.div`
     props.isNotFirst &&
     css`
       &:before {
-        content: "";
+        content: '';
         width: 0;
         height: 48px;
         position: absolute;
@@ -63,7 +63,12 @@ const Breadcrumb = ({ activeId, data }) => {
           const active = step.step === parseInt(activeId);
           const isNotFirst = i !== 0;
           return (
-            <BreadcrumbElement key={i} {...theme} isNotFirst={isNotFirst}>
+            <BreadcrumbElement
+              key={i}
+              {...theme}
+              selected={active}
+              isNotFirst={isNotFirst}
+            >
               <div className="text-section">
                 <h4>{step.text}</h4>
                 <p>{step.subtext}</p>

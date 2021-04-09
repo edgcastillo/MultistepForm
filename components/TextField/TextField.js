@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import styled, { ThemeContext } from "styled-components";
+import React, { useContext, useState } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 
 const TextFieldStyles = styled.div`
   & > input {
@@ -25,9 +25,9 @@ const Label = styled.p`
 `;
 
 const TextField = ({ elem }) => {
-  const [value, setValue] = useState("");
-  // validation for later
-  const { id, component, label, validation, required } = elem;
+  const { id, component, label, validation, required, value } = elem;
+  const [fieldValue, setFieldValue] = useState(value);
+  // TODO: validation for later
   const theme = useContext(ThemeContext);
   return (
     <TextFieldStyles {...theme}>
@@ -36,7 +36,7 @@ const TextField = ({ elem }) => {
       </Label>
       <input
         type="text"
-        value={value}
+        value={fieldValue}
         name={`${component}${id}`}
         onChange={(e) => setValue(e.target.value)}
       />

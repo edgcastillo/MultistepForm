@@ -1,17 +1,23 @@
-import React, { useContext } from "react";
-import styled, { ThemeContext } from "styled-components";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import React, { useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
-// Utils, Selectors and Button
-import { componentFactory } from "../../utils/componentFactory";
+// Components
+import { componentFactory } from '../../utils/componentFactory';
+import Breadcrumb from '../Breadcrumb/Breadcrumb';
+import { FormNextButton, FormBackButton } from '../Button/Button';
+
+// Redux Actions and Selectors
 import {
   selectPageCount,
-  selectBreadcrumbData
-} from "../../features/paginationSlice";
-import { FormNextButton, FormBackButton } from "../Button/Button";
-import Breadcrumb from "../Breadcrumb/Breadcrumb";
+  selectBreadcrumbData,
+} from '../../features/paginationSlice';
+import {
+  userOptionSelector,
+  saveStepAction,
+} from '../../features/userSelectionSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -36,35 +42,48 @@ const StepActionButtons = styled.div`
 `;
 
 const Step = ({ elem }) => {
-  const theme = useContext(ThemeContext);
-  const count = useSelector(selectPageCount);
+  // Redux Selectors
   const breadcrumbData = useSelector(selectBreadcrumbData);
+  const userSelection = useSelector(userOptionSelector);
+  const count = useSelector(selectPageCount);
+
+  // Data from Redux Selectors
+  const { userChoice } = userSelection;
+  const { pageCount } = count;
+
+  const theme = useContext(ThemeContext);
   const router = useRouter();
   const { id } = router.query;
   const pageIndex = parseInt(id);
-  const { pageCount } = count;
-  // TODO: add some validation/control to avoid user going over to non-existent steps
-  const nextPage = pageIndex + 1;
-  const backPage = pageIndex - 1;
+  const nextPage = pageCount === pageIndex ? pageIndex : pageIndex + 1;
+  const backPage = pageCount <= 0 ? pageIndex : pageIndex - 1;
   const buttonText =
-    pageIndex === parseInt(pageCount) ? "Complete" : "Next Step";
+    pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
+
+  const handleClick = () => {
+    if (userChoice) {
+      router.push(`/step/${nextPage}`);
+    }
+  };
   return (
     <MainContentStyles>
       <Breadcrumb activeId={id} data={breadcrumbData} />
       <FormSection>
         <div>
           <StepTracker {...theme}>{`Step ${id}/${pageCount}`}</StepTracker>
-          {componentFactory(elem)}
+          {componentFactory(elem, userChoice)}
         </div>
         <StepActionButtons>
           <Link href={`/step/${backPage}`}>
             <FormBackButton {...theme}>Back</FormBackButton>
           </Link>
-          <Link href={`/step/${nextPage}`}>
-            <FormNextButton background={theme.active} color={theme.primary}>
-              {buttonText}
-            </FormNextButton>
-          </Link>
+          <FormNextButton
+            onClick={() => handleClick()}
+            background={theme.active}
+            color={theme.primary}
+          >
+            {buttonText}
+          </FormNextButton>
         </StepActionButtons>
       </FormSection>
     </MainContentStyles>
