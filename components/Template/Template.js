@@ -6,31 +6,27 @@ import Header from '../Header/Header';
 import { devices } from '../MediaQueries';
 
 const TemplateStyles = styled.div`
-  width: 1200px;
   height: auto;
+  width: 700px;
   overflow: hidden;
   border-radius: 25px;
   background: ${({ background }) => background};
 
-  @media ${devices.large} {
+  @media ${devices.laptop} {
     width: 900px;
   }
 
-  @media ${devices.medium} {
-    width: 700px;
+  @media ${devices.desktop} {
+    width: 1200px;
   }
 `;
 
 const ContentStyles = styled.div`
   height: inherit;
-  padding: 100px;
+  padding: 50px;
 
-  @media ${devices.large} {
-    padding: 50px;
-  }
-
-  @media ${devices.medium} {
-    padding: 40px;
+  @media ${devices.desktop} {
+    padding: 100px;
   }
 `;
 

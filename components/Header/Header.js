@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import styled, { ThemeContext } from "styled-components";
+import React, { useContext } from 'react';
+import styled, { ThemeContext } from 'styled-components';
 
 const HeaderStyles = styled.header`
   padding-bottom: 25px;

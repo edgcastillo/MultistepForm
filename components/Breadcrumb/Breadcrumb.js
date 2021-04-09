@@ -10,10 +10,6 @@ const BreadcrumbSection = styled.section`
   gap: 50px;
   border-right: 1px solid ${({ border }) => border};
   margin-right: 50px;
-
-  @media ${devices.medium} {
-    display: none;
-  }
 `;
 
 const BreadcrumbElement = styled.div`

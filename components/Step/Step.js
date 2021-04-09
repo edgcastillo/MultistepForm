@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 // Components
 import { componentFactory } from '../../utils/componentFactory';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
+import BreadcrumbMobile from '../Breadcrumb/BreadcrumbMobile';
 import { FormNextButton, FormBackButton } from '../Button/Button';
 import { devices } from '../MediaQueries';
 
@@ -19,10 +20,21 @@ import { userOptionSelector } from '../../features/userSelectionSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
-  grid-template-columns: 350px 1fr;
+  position: relative;
+  grid-template-columns: 1fr;
 
-  @media ${devices.medium} {
-    grid-template-columns: 1fr;
+  & > .breadcrumb-desktop {
+    display: none;
+  }
+
+  @media ${devices.laptop} {
+    grid-template-columns: 350px 1fr;
+    & > .breadcrumb-desktop {
+      display: block;
+    }
+    & > .breadcrumb-mobile {
+      display: none;
+    }
   }
 `;
 
@@ -72,7 +84,13 @@ const Step = ({ elem }) => {
   };
   return (
     <MainContentStyles>
-      <Breadcrumb activeId={id} data={breadcrumbData} />
+      <div className="breadcrumb-desktop">
+        <Breadcrumb activeId={id} data={breadcrumbData} />
+      </div>
+      <div className="breadcrumb-mobile">
+        <BreadcrumbMobile activeId={id} data={breadcrumbData} />
+      </div>
+
       <FormSection>
         <div>
           <StepTracker {...theme}>{`Step ${id}/${pageCount}`}</StepTracker>
