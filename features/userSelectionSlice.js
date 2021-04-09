@@ -7,19 +7,23 @@ export const userSelectionSlice = createSlice({
     data: [],
   },
   reducers: {
-    userStepOption: (state, { payload }) => {
-      if (payload.value) {
-        state.data.push({ id: payload.step, value: payload.value });
-      }
+    userSaveSelection: (state, { payload }) => {
       state.userChoice = payload.value;
     },
-    saveStepAction: (state, { payload }) => {
-      state[payload.step] = {};
+    userSaveData: (state, { payload }) => {
+      if (payload.value) {
+        const { id, elemId, value, isRequired } = payload;
+        const arr = state.data.filter((field) => {
+          return field.elemId !== payload.elemId;
+        });
+        arr.push({ id, elemId, value, isRequired });
+        state.data = arr;
+      }
     },
   },
 });
 
-export const { userStepOption } = userSelectionSlice.actions;
+export const { userSaveSelection } = userSelectionSlice.actions;
 
 export const userOptionSelector = (state) => state.userSelection;
 

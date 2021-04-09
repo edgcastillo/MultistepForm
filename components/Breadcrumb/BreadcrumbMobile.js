@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext, css } from 'styled-components';
-import { BigCircleStep, SmallCircleStep } from '../Circle/Circle';
-import { devices } from '../MediaQueries';
+import { SmallCircleStep } from '../Circle/Circle';
 
 const BreadcrumbMobileSection = styled.div`
   display: grid;
@@ -24,6 +23,7 @@ const BreadcrumbMobile = ({ activeId, data }) => {
       </BreadcrumbMobileSection>
     );
   }
+  return null;
 };
 
 export default BreadcrumbMobile;

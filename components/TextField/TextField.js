@@ -2,10 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import {
-  userStepOption,
-  userOptionSelector,
-} from '../../features/userSelectionSlice';
+import { userOptionSelector } from '../../features/userSelectionSlice';
 
 const TextFieldStyles = styled.div`
   & > input {
@@ -45,10 +42,7 @@ const TextField = ({ elem }) => {
   const { id } = router.query;
   const theme = useContext(ThemeContext);
   const data = useSelector(userOptionSelector);
-  useEffect(() => {
-    // console.log(data);
-    // dispatch(userStepOption({ step: id, value: fieldValue }));
-  }, [fieldValue]);
+  useEffect(() => {}, [fieldValue]);
   return (
     <TextFieldStyles {...theme}>
       <Label {...theme} htmlFor={`${component}${id}`}>

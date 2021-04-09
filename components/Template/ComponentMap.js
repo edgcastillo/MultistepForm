@@ -8,6 +8,7 @@ import TextField from '../TextField/TextField';
 import { BigCircleStep } from '../Circle/Circle';
 import TextArea from '../TextArea/TextArea';
 import DateField from '../DateField/DateField';
+import SelectField from '../SelectField/SelectField';
 
 const Components = {
   header: Header,
@@ -17,6 +18,7 @@ const Components = {
   circle: BigCircleStep,
   textarea: TextArea,
   dateField: DateField,
+  selectField: SelectField,
 };
 
 export const Component = (elem) => {

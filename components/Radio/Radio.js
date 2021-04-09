@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { userStepOption } from '../../features/userSelectionSlice';
+import { userSaveSelection } from '../../features/userSelectionSlice';
 import styled, { ThemeContext, css } from 'styled-components';
 
 const Legend = styled.p`
@@ -45,7 +45,7 @@ const Radio = ({ elem }) => {
   const { id } = router.query;
   const theme = useContext(ThemeContext);
   useEffect(() => {
-    dispatch(userStepOption({ step: id, value }));
+    dispatch(userSaveSelection({ value }));
   }, [value]);
   const handleChange = (e) => {
     setValue(e.target.value);
