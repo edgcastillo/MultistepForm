@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 
 // Components
 import { componentFactory } from '../../utils/componentFactory';
@@ -17,8 +16,7 @@ import {
   selectPageCount,
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
-// import { userOptionSelector } from '../../features/userSelectionSlice';
-import { userDataSelector } from '../../features/userDataSlice';
+import { userDataSelector, clearCookies } from '../../features/userDataSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -59,6 +57,8 @@ const StepActionButtons = styled.div`
 
 const Step = ({ elem }) => {
   const [open, setOpenModal] = useState(false);
+  const [modalMsg, setModalMsg] = useState('');
+  const dispatch = useDispatch();
   // Redux Selectors
   const breadcrumbData = useSelector(selectBreadcrumbData);
   const selection = useSelector(userDataSelector);
@@ -81,17 +81,27 @@ const Step = ({ elem }) => {
   const buttonText =
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
-  const handleClick = () => {
-    if ((userChoice && id === '1') || userData.status === 'valid') {
+  const handleClickNext = () => {
+    if (
+      (userChoice && pageIndex === 1) ||
+      (userData.status === 'valid' && pageIndex !== pageCount)
+    ) {
       router.push(`/step/${nextPage}`);
+    } else if (pageIndex === pageCount) {
+      setModalMsg('Form Completed');
+    } else {
+      setModalMsg('Please fill required fields');
     }
     setOpenModal(true);
+  };
+  const handleClickBack = () => {
+    router.push(`/step/${backPage}`);
   };
   return (
     <>
       <MainContentStyles>
         <Modal
-          message="Please fill required fields"
+          message={modalMsg}
           isOpen={open}
           onClose={() => setOpenModal(false)}
         />
@@ -108,11 +118,16 @@ const Step = ({ elem }) => {
             {componentFactory(elem, userChoice)}
           </div>
           <StepActionButtons>
-            <Link href={`/step/${backPage}`}>
-              <FormBackButton {...theme}>Back</FormBackButton>
-            </Link>
+            <FormBackButton
+              {...theme}
+              onClick={() => handleClickBack()}
+              disabled={pageIndex === 1}
+            >
+              Back
+            </FormBackButton>
+
             <FormNextButton
-              onClick={() => handleClick()}
+              onClick={() => handleClickNext()}
               background={theme.active}
               color={theme.primary}
             >

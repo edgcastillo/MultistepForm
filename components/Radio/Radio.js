@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { userSaveSelection } from '../../features/userDataSlice';
 import styled, { ThemeContext, css } from 'styled-components';
+import Cookies from 'js-cookie';
+import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const Legend = styled.p`
   font-size: 18px;
@@ -39,10 +41,15 @@ const Input = styled.input`
 `;
 
 const Radio = ({ elem }) => {
+  const { value } = elem;
   const dispatch = useDispatch();
-  const [radioValue, setRadioValue] = useState('');
+  const [radioValue, setRadioValue] = useState(
+    () => Cookies.get('radio') || value
+  );
   const theme = useContext(ThemeContext);
+  const clearCookieTime = setTimeForCookies(5);
   useEffect(() => {
+    Cookies.set('radio', radioValue, { expires: clearCookieTime });
     dispatch(userSaveSelection({ radioValue }));
   }, [radioValue]);
   const handleChange = (e) => {

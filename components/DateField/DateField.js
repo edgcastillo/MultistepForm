@@ -1,5 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { userSaveData } from '../../features/userDataSlice';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const DatePickerComponent = styled.input`
   width: 50%;
@@ -28,11 +33,37 @@ const Label = styled.p`
 `;
 
 const DatePicker = ({ elem }) => {
+  const { id: elemId, label, component, validation, required, value } = elem;
+  const [dateSelected, setDate] = useState(
+    () => Cookies.get(`${elemId}`) || value
+  );
   const theme = useContext(ThemeContext);
+  const router = useRouter();
+  const { id } = router.query;
+  const dispatch = useDispatch();
+  const clearCookieTime = setTimeForCookies(5);
+  console.log(dateSelected);
+  useEffect(() => {
+    Cookies.set(`${elemId}`, dateSelected, { expires: clearCookieTime });
+    dispatch(
+      userSaveData({
+        elemId,
+        id,
+        value: dateSelected,
+        isRequired: required,
+      })
+    );
+  }, [dateSelected]);
   return (
     <>
       <Label {...theme}>{elem.label}</Label>
-      <DatePickerComponent type="date" {...theme} autoComplete="off" />
+      <DatePickerComponent
+        value={dateSelected}
+        type="date"
+        {...theme}
+        autoComplete="off"
+        onChange={(e) => setDate(e.target.value)}
+      />
     </>
   );
 };

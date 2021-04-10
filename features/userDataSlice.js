@@ -39,9 +39,12 @@ export const userDataSlice = createSlice({
       if (isAllValid.length >= 1) {
         state.status = 'invalid';
       } else if (isAllValid.length === 0 && state.userChoice !== null) {
-        console.log('here', state.userChoice);
         state.status = 'valid';
       }
+    },
+    clearCookies: (state, { payload }) => {
+      console.log(payload);
+      state.status = payload.message;
     },
   },
 });
@@ -50,6 +53,7 @@ export const {
   userSaveData,
   validateData,
   userSaveSelection,
+  clearCookies,
 } = userDataSlice.actions;
 
 export const userDataSelector = (state) => state.userData;

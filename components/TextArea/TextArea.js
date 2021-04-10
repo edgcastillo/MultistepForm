@@ -1,5 +1,10 @@
-import React, { useContext } from "react";
-import styled, { ThemeContext } from "styled-components";
+import React, { useContext, useState, useEffect } from 'react';
+import styled, { ThemeContext } from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { userSaveData } from '../../features/userDataSlice';
+import Cookies from 'js-cookie';
+import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const TextAreaStyles = styled.div`
   & > .textareaInput {
@@ -26,12 +31,41 @@ const Label = styled.label`
 `;
 
 const TextArea = ({ elem }) => {
+  const {
+    id: elemId,
+    label,
+    component,
+    maxLength,
+    validation,
+    required,
+    value,
+  } = elem;
+  const [textAreaValue, setTextAreaValue] = useState(
+    () => Cookies.get(`${elemId}`) || value
+  );
   const theme = useContext(ThemeContext);
+  const router = useRouter();
+  const { id } = router.query;
+  const dispatch = useDispatch();
+  const clearCookieTime = setTimeForCookies(5);
+  useEffect(() => {
+    Cookies.set(`${elemId}`, textAreaValue, { expires: clearCookieTime });
+    dispatch(
+      userSaveData({
+        elemId,
+        id,
+        value: textAreaValue,
+        isRequired: required,
+      })
+    );
+  }, [textAreaValue]);
   return (
     <TextAreaStyles {...theme}>
       <Label {...theme}>{elem.label}</Label>
       <textarea
-        maxLength="140"
+        value={textAreaValue}
+        onChange={(e) => setTextAreaValue(e.target.value)}
+        maxLength={maxLength}
         className="textareaInput"
         rows="10"
         cols="40"

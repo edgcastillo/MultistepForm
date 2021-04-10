@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components';
 import { userSaveData } from '../../features/userDataSlice';
+import Cookies from 'js-cookie';
+import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const Select = styled.select`
   height: 50px;
@@ -35,8 +37,12 @@ const SelectField = ({ elem }) => {
   const theme = useContext(ThemeContext);
   const router = useRouter();
   const { id } = router.query;
-  const [optionsValue, setOptionsValue] = useState(value);
+  const [optionsValue, setOptionsValue] = useState(
+    () => Cookies.get(`${elemId}`) || value
+  );
+  const clearCookieTime = setTimeForCookies(5);
   useEffect(() => {
+    Cookies.set(`${elemId}`, optionsValue, { expires: clearCookieTime });
     dispatch(
       userSaveData({
         elemId,

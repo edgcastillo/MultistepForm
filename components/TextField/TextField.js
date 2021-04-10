@@ -1,8 +1,10 @@
 import React, { useEffect, useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { userSaveData } from '../../features/userDataSlice';
+import { userSaveData, userDataSelector } from '../../features/userDataSlice';
+import Cookies from 'js-cookie';
+import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const TextFieldStyles = styled.div`
   & > input {
@@ -35,21 +37,18 @@ const Label = styled.p`
 `;
 
 const TextField = ({ elem }) => {
-  const {
-    id: elemId,
-    label,
-    component,
-    validation,
-    preset,
-    required,
-    value,
-  } = elem;
-  const [fieldValue, setFieldValue] = useState(value);
+  const { id: elemId, label, component, validation, required, value } = elem;
+  const [fieldValue, setFieldValue] = useState(
+    () => Cookies.get(`${elemId}`) || value
+  );
+  const clearCookieTime = setTimeForCookies(5);
+  const userData = useSelector(userDataSelector);
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
   const theme = useContext(ThemeContext);
   useEffect(() => {
+    Cookies.set(`${elemId}`, fieldValue, { expires: clearCookieTime });
     dispatch(
       userSaveData({
         elemId,
