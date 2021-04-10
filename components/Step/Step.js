@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import { componentFactory } from '../../utils/componentFactory';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import BreadcrumbMobile from '../Breadcrumb/BreadcrumbMobile';
 import { FormNextButton, FormBackButton } from '../Button/Button';
+import Modal from '../Modal/Modal';
 import { devices } from '../MediaQueries';
 
 // Redux Actions and Selectors
@@ -16,8 +17,12 @@ import {
   selectPageCount,
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
-import { userOptionSelector } from '../../features/userSelectionSlice';
-import { validateData, userDataSelector } from '../../features/userDataSlice';
+// import { userOptionSelector } from '../../features/userSelectionSlice';
+import {
+  validateData,
+  userDataSelector,
+  userSaveSelection,
+} from '../../features/userDataSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -57,15 +62,16 @@ const StepActionButtons = styled.div`
 `;
 
 const Step = ({ elem }) => {
+  const [open, setOpen] = useState(false);
   // Redux Selectors
   const dispatch = useDispatch();
   const breadcrumbData = useSelector(selectBreadcrumbData);
-  const userSelection = useSelector(userOptionSelector);
+  const selection = useSelector(userDataSelector);
   const userData = useSelector(userDataSelector);
   const count = useSelector(selectPageCount);
 
   // Data from Redux Selectors
-  const { userChoice } = userSelection;
+  const { userChoice } = selection;
   const { pageCount } = count;
 
   // NextJS
@@ -81,38 +87,47 @@ const Step = ({ elem }) => {
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
   const handleClick = () => {
-    if (userChoice) {
+    console.log(userData);
+    if ((userChoice && id === '1') || userData.status === 'valid') {
       router.push(`/step/${nextPage}`);
     }
+    setOpen(true);
   };
   return (
-    <MainContentStyles>
-      <div className="breadcrumb-desktop">
-        <Breadcrumb activeId={id} data={breadcrumbData} />
-      </div>
-      <div className="breadcrumb-mobile">
-        <BreadcrumbMobile activeId={id} data={breadcrumbData} />
-      </div>
-
-      <FormSection>
-        <div>
-          <StepTracker {...theme}>{`Step ${id}/${pageCount}`}</StepTracker>
-          {componentFactory(elem, userChoice)}
+    <>
+      <MainContentStyles>
+        <Modal
+          message="Please fill required fields"
+          isOpen={open}
+          onClose={() => setOpen(false)}
+        />
+        <div className="breadcrumb-desktop">
+          <Breadcrumb activeId={id} data={breadcrumbData} />
         </div>
-        <StepActionButtons>
-          <Link href={`/step/${backPage}`}>
-            <FormBackButton {...theme}>Back</FormBackButton>
-          </Link>
-          <FormNextButton
-            onClick={() => handleClick()}
-            background={theme.active}
-            color={theme.primary}
-          >
-            {buttonText}
-          </FormNextButton>
-        </StepActionButtons>
-      </FormSection>
-    </MainContentStyles>
+        <div className="breadcrumb-mobile">
+          <BreadcrumbMobile activeId={id} data={breadcrumbData} />
+        </div>
+
+        <FormSection>
+          <div>
+            <StepTracker {...theme}>{`Step ${id}/${pageCount}`}</StepTracker>
+            {componentFactory(elem, userChoice)}
+          </div>
+          <StepActionButtons>
+            <Link href={`/step/${backPage}`}>
+              <FormBackButton {...theme}>Back</FormBackButton>
+            </Link>
+            <FormNextButton
+              onClick={() => handleClick()}
+              background={theme.active}
+              color={theme.primary}
+            >
+              {buttonText}
+            </FormNextButton>
+          </StepActionButtons>
+        </FormSection>
+      </MainContentStyles>
+    </>
   );
 };
 

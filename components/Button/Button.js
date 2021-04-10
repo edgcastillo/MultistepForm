@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 // TODO: create basebutton and remove repetition.
 export const FormNextButton = styled.button`
   width: 150px;
@@ -26,5 +26,20 @@ export const FormBackButton = styled.button`
   color: ${({ secondary }) => secondary};
   &:hover {
     cursor: pointer;
+  }
+`;
+
+export const CloseButton = styled.button`
+  height: 25px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  background: none;
+  border: none;
+  &:focus {
+    outline: 0;
   }
 `;

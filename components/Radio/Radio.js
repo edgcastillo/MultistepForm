@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { userSaveSelection } from '../../features/userSelectionSlice';
+import { userSaveSelection } from '../../features/userDataSlice';
 import styled, { ThemeContext, css } from 'styled-components';
 
 const Legend = styled.p`
