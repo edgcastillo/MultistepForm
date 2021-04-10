@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // Components
 import { componentFactory } from '../../utils/componentFactory';
@@ -18,11 +18,7 @@ import {
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
 // import { userOptionSelector } from '../../features/userSelectionSlice';
-import {
-  validateData,
-  userDataSelector,
-  userSaveSelection,
-} from '../../features/userDataSlice';
+import { userDataSelector } from '../../features/userDataSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -62,9 +58,8 @@ const StepActionButtons = styled.div`
 `;
 
 const Step = ({ elem }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpenModal] = useState(false);
   // Redux Selectors
-  const dispatch = useDispatch();
   const breadcrumbData = useSelector(selectBreadcrumbData);
   const selection = useSelector(userDataSelector);
   const userData = useSelector(userDataSelector);
@@ -87,11 +82,10 @@ const Step = ({ elem }) => {
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
   const handleClick = () => {
-    console.log(userData);
     if ((userChoice && id === '1') || userData.status === 'valid') {
       router.push(`/step/${nextPage}`);
     }
-    setOpen(true);
+    setOpenModal(true);
   };
   return (
     <>
@@ -99,7 +93,7 @@ const Step = ({ elem }) => {
         <Modal
           message="Please fill required fields"
           isOpen={open}
-          onClose={() => setOpen(false)}
+          onClose={() => setOpenModal(false)}
         />
         <div className="breadcrumb-desktop">
           <Breadcrumb activeId={id} data={breadcrumbData} />

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import styled, { ThemeContext, css } from 'styled-components';
 import { BigCircleStep, SmallCircleStep } from '../Circle/Circle';
-import { devices } from '../MediaQueries';
 
 const BreadcrumbSection = styled.section`
   height: 100%;

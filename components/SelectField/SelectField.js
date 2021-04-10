@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components';
-
-const Container = styled.div``;
+import { userSaveData } from '../../features/userDataSlice';
 
 const Select = styled.select`
   height: 50px;
@@ -29,11 +30,30 @@ const Label = styled.p`
 `;
 
 const SelectField = ({ elem }) => {
+  const { id: elemId, value, required, label, validation } = elem;
+  const dispatch = useDispatch();
   const theme = useContext(ThemeContext);
+  const router = useRouter();
+  const { id } = router.query;
+  const [optionsValue, setOptionsValue] = useState(value);
+  useEffect(() => {
+    dispatch(
+      userSaveData({
+        elemId,
+        id,
+        value: optionsValue,
+        isRequired: required,
+      })
+    );
+  }, [optionsValue]);
   return (
-    <Container>
-      <Label {...theme}>{elem.label}</Label>
-      <Select {...theme}>
+    <>
+      <Label {...theme}>{label}</Label>
+      <Select
+        {...theme}
+        value={optionsValue}
+        onChange={(e) => setOptionsValue(e.target.value)}
+      >
         {elem.options.map((obj, i) => {
           return (
             <option key={i} value={obj.value}>
@@ -42,7 +62,7 @@ const SelectField = ({ elem }) => {
           );
         })}
       </Select>
-    </Container>
+    </>
   );
 };
 

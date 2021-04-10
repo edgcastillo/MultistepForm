@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const data = {
   content: {
     header: {
@@ -8,21 +10,21 @@ export const data = {
     },
     breadcrumb: [
       {
-        id: Math.floor(Math.random() * 10000000),
+        id: uuidv4(),
         step: 1,
         component: 'circle',
         text: 'Account info',
         subtext: 'Investing information',
       },
       {
-        id: Math.floor(Math.random() * 10000000),
+        id: uuidv4(),
         step: 2,
         component: 'circle',
         text: 'Investor info',
         subtext: 'More information about you',
       },
       {
-        id: Math.floor(Math.random() * 10000000),
+        id: uuidv4(),
         step: 3,
         component: 'circle',
         text: 'Feedback',
@@ -34,14 +36,14 @@ export const data = {
         id: 1,
         step: true,
         header: {
-          id: Math.floor(Math.random() * 10000000),
+          id: uuidv4(),
           component: 'header',
           title: 'First Step',
           subtitle: 'This is another section option for subheader',
         },
         questions: [
           {
-            id: Math.floor(Math.random() * 10000000),
+            id: uuidv4(),
             component: 'radio',
             text: 'Who will be investing?',
             required: true,
@@ -57,7 +59,7 @@ export const data = {
         id: 2,
         step: true,
         header: {
-          id: Math.floor(Math.random() * 10000000),
+          id: uuidv4(),
           component: 'header',
           title: 'Second Step',
           subtitle: 'This is another section option for subheader',
@@ -65,7 +67,7 @@ export const data = {
         answerA: {
           questions: [
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Name',
               value: 'Edwin',
@@ -73,7 +75,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Last name',
               value: 'Castillo',
@@ -81,7 +83,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Tax ID',
               value: '123-456-7890',
@@ -93,7 +95,7 @@ export const data = {
         answerB: {
           questions: [
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Name',
               value: '',
@@ -101,7 +103,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Last name',
               value: '',
@@ -109,7 +111,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Tax ID',
               value: '',
@@ -121,7 +123,7 @@ export const data = {
         answerC: {
           questions: [
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Name',
               value: '',
@@ -129,7 +131,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Last name',
               value: '',
@@ -137,14 +139,14 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'dateField',
               label: 'Date',
               validation: null,
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Formation City',
               value: '',
@@ -152,7 +154,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'textField',
               label: 'Tax ID',
               value: '',
@@ -166,7 +168,7 @@ export const data = {
         id: 3,
         step: true,
         header: {
-          id: Math.floor(Math.random() * 10000000),
+          id: uuidv4(),
           component: 'header',
           title: 'Third Step',
           subtitle: 'This is another section option for subheader',
@@ -174,7 +176,7 @@ export const data = {
         answerA: {
           questions: [
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'selectField',
               label: 'How many other real estate investments have you made?',
               options: [
@@ -186,7 +188,7 @@ export const data = {
               required: false,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               label: 'What brought you back to our platform?',
               maxLength: 140,
               component: 'textarea',
@@ -198,7 +200,7 @@ export const data = {
         answerB: {
           questions: [
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'selectField',
               label: 'How did you find out about our platform?',
               options: [
@@ -212,7 +214,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'selectField',
               label: 'How would you describe your accreditation?',
               options: [
@@ -228,7 +230,7 @@ export const data = {
         answerC: {
           questions: [
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'selectField',
               label: 'Is your entity a Qualified Institutional Buyer?',
               options: [
@@ -239,7 +241,7 @@ export const data = {
               required: true,
             },
             {
-              id: Math.floor(Math.random() * 10000000),
+              id: uuidv4(),
               component: 'selectField',
               label: 'How big is your portfolio?',
               options: [

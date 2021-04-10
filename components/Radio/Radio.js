@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { userSaveSelection } from '../../features/userDataSlice';
 import styled, { ThemeContext, css } from 'styled-components';
@@ -40,21 +40,19 @@ const Input = styled.input`
 
 const Radio = ({ elem }) => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState(null);
-  const router = useRouter();
-  const { id } = router.query;
+  const [radioValue, setRadioValue] = useState('');
   const theme = useContext(ThemeContext);
   useEffect(() => {
-    dispatch(userSaveSelection({ value }));
-  }, [value]);
+    dispatch(userSaveSelection({ radioValue }));
+  }, [radioValue]);
   const handleChange = (e) => {
-    setValue(e.target.value);
+    setRadioValue(e.target.value);
   };
   return (
     <React.Fragment>
       <Legend {...theme}>{elem.text}</Legend>
       {elem.options.map((option, i) => {
-        const checked = value === option.value;
+        const checked = radioValue === option.value;
         return (
           <Label {...theme} checked={checked} key={`${option.value}${i}`}>
             <Input

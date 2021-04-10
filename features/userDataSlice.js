@@ -9,14 +9,20 @@ export const userDataSlice = createSlice({
   },
   reducers: {
     userSaveSelection: (state, { payload }) => {
-      state.userChoice = payload.value;
+      state.userChoice = payload.radioValue;
     },
     userSaveData: (state, { payload }) => {
       const newArr = state.entitity.filter((field) => {
         return field.elemId !== payload.elemId;
       });
       newArr.push(payload);
-      state.entitity = newArr;
+      state.entitity = [...newArr];
+
+      // const arr = state.entitity;
+      // state.entitity = arr.splice(index, 1, payload);
+      // const { id } = payload;
+      // const [id] = payload;
+      // console.log(payload);
       const isAllValid = state.entitity.filter((field) => {
         return field.isRequired === true && field.value === '';
       });

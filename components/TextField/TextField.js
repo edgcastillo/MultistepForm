@@ -35,7 +35,15 @@ const Label = styled.p`
 `;
 
 const TextField = ({ elem }) => {
-  const { id: elemId, component, label, validation, required, value } = elem;
+  const {
+    id: elemId,
+    label,
+    component,
+    validation,
+    preset,
+    required,
+    value,
+  } = elem;
   const [fieldValue, setFieldValue] = useState(value);
   const dispatch = useDispatch();
   const router = useRouter();
