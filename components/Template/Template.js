@@ -3,6 +3,7 @@ import styled, { ThemeContext } from 'styled-components';
 import { Component } from './ComponentMap';
 
 import Header from '../Header/Header';
+import Toast from '../Toast/Toast';
 import { devices } from '../MediaQueries';
 
 const TemplateStyles = styled.div`
@@ -24,6 +25,7 @@ const TemplateStyles = styled.div`
 const ContentStyles = styled.div`
   height: inherit;
   padding: 50px;
+  position: relative;
 
   @media ${devices.desktop} {
     padding: 100px;
@@ -36,6 +38,7 @@ const Template = ({ header, config }) => {
     return (
       <TemplateStyles {...theme}>
         <ContentStyles>
+          <Toast />
           <Header elem={header} />
           <Component {...config} />
         </ContentStyles>

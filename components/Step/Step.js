@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -8,7 +8,6 @@ import { componentFactory } from '../../utils/componentFactory';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import BreadcrumbMobile from '../Breadcrumb/BreadcrumbMobile';
 import { FormNextButton, FormBackButton } from '../Button/Button';
-import Modal from '../Modal/Modal';
 import { devices } from '../MediaQueries';
 
 // Redux Actions and Selectors
@@ -16,7 +15,7 @@ import {
   selectPageCount,
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
-import { userDataSelector, clearCookies } from '../../features/userDataSlice';
+import { userDataSelector, displayToast } from '../../features/userDataSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -56,8 +55,6 @@ const StepActionButtons = styled.div`
 `;
 
 const Step = ({ elem }) => {
-  const [open, setOpenModal] = useState(false);
-  const [modalMsg, setModalMsg] = useState('');
   const dispatch = useDispatch();
   // Redux Selectors
   const breadcrumbData = useSelector(selectBreadcrumbData);
@@ -82,17 +79,15 @@ const Step = ({ elem }) => {
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
   const handleClickNext = () => {
+    console.log(userData);
     if (
       (userChoice && pageIndex === 1) ||
       (userData.status === 'valid' && pageIndex !== pageCount)
     ) {
       router.push(`/step/${nextPage}`);
-    } else if (pageIndex === pageCount) {
-      setModalMsg('Form Completed');
     } else {
-      setModalMsg('Please fill required fields');
+      dispatch(displayToast());
     }
-    setOpenModal(true);
   };
   const handleClickBack = () => {
     router.push(`/step/${backPage}`);
@@ -100,11 +95,6 @@ const Step = ({ elem }) => {
   return (
     <>
       <MainContentStyles>
-        <Modal
-          message={modalMsg}
-          isOpen={open}
-          onClose={() => setOpenModal(false)}
-        />
         <div className="breadcrumb-desktop">
           <Breadcrumb activeId={id} data={breadcrumbData} />
         </div>

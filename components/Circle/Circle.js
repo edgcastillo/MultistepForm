@@ -8,6 +8,7 @@ const BigCircleStepStyles = styled.div`
   height: 50px;
   width: 50px;
   border-radius: 50%;
+  z-index: 0;
   color: ${({ border }) => border};
   background: ${({ unactive }) => unactive};
   ${(props) =>

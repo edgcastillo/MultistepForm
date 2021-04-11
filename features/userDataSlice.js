@@ -3,9 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userDataSlice = createSlice({
   name: 'userData',
   initialState: {
+    stepErrorsId: '',
     entitity: [],
     userChoice: '',
+    errors: [],
     status: null,
+    toggleToast: false,
   },
   reducers: {
     userSaveSelection: (state, { payload }) => {
@@ -17,45 +20,35 @@ export const userDataSlice = createSlice({
       });
       newArr.push(payload);
       state.entitity = [...newArr];
-
-      // const arr = state.entitity;
-      // state.entitity = arr.splice(index, 1, payload);
-      // const { id } = payload;
-      // const [id] = payload;
-      // console.log(payload);
-      const isAllValid = state.entitity.filter((field) => {
-        return field.isRequired === true && field.value === '';
+      const invalidFields = state.entitity.filter((field) => {
+        return field.isRequired === true && field.isValid === false;
       });
-      if (isAllValid.length >= 1) {
+      if (invalidFields.length >= 1) {
         state.status = 'invalid';
-      } else if (isAllValid.length === 0 && state.userChoice !== null) {
+        state.errors = invalidFields;
+        state.stepErrorsId = payload.id;
+      } else if (invalidFields.length === 0 && state.userChoice !== null) {
         state.status = 'valid';
+        state.stepErrorsId = '';
       }
     },
-    validateData: (state, action) => {
-      const isAllValid = state.entitity.filter((field) => {
-        return field.isRequired === true && field.value === '';
-      });
-      if (isAllValid.length >= 1) {
-        state.status = 'invalid';
-      } else if (isAllValid.length === 0 && state.userChoice !== null) {
-        state.status = 'valid';
-      }
+    displayToast: (state, action) => {
+      state.toggleToast = true;
     },
-    clearCookies: (state, { payload }) => {
-      console.log(payload);
-      state.status = payload.message;
+    closeToast: (state, action) => {
+      state.toggleToast = false;
     },
   },
 });
 
 export const {
   userSaveData,
-  validateData,
   userSaveSelection,
-  clearCookies,
+  displayToast,
+  closeToast,
 } = userDataSlice.actions;
 
 export const userDataSelector = (state) => state.userData;
+export const userShowToastSelector = (state) => state.userData.toggleToast;
 
 export default userDataSlice.reducer;

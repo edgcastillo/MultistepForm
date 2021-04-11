@@ -41,7 +41,7 @@ const DatePicker = ({ elem }) => {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
-  const clearCookieTime = setTimeForCookies(5);
+  const clearCookieTime = setTimeForCookies();
   console.log(dateSelected);
   useEffect(() => {
     Cookies.set(`${elemId}`, dateSelected, { expires: clearCookieTime });

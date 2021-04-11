@@ -9,5 +9,6 @@ export const theme = {
     unactive: '#494A7D',
     border: 'rgba(174, 175, 197, 0.2)',
     modal: '#1A1832',
+    toastBackground: '#F08080',
   },
 };

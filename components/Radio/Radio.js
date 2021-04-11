@@ -47,7 +47,7 @@ const Radio = ({ elem }) => {
     () => Cookies.get('radio') || value
   );
   const theme = useContext(ThemeContext);
-  const clearCookieTime = setTimeForCookies(5);
+  const clearCookieTime = setTimeForCookies();
   useEffect(() => {
     Cookies.set('radio', radioValue, { expires: clearCookieTime });
     dispatch(userSaveSelection({ radioValue }));

@@ -3,8 +3,8 @@ import Link from "next/link";
 import styled from "styled-components";
 
 const Title = styled.h1`
-  background-color: blue;
-  color: white;
+  background-color: white;
+  color: lightblue;
 `;
 
 export default function IndexPage() {
