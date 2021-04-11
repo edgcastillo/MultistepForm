@@ -57,7 +57,7 @@ const TextField = ({ elem, fieldPropValue }) => {
   const router = useRouter();
   const { id } = router.query;
 
-  // const clearCookieTime = setTimeForCookies();
+  // regex
   const pattern = validation ? validation : /\S+/;
   const regex = new RegExp(pattern, 'g');
 

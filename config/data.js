@@ -125,15 +125,7 @@ export const data = {
             {
               id: uuidv4(),
               component: 'textField',
-              label: 'Name',
-              value: '',
-              validation: null,
-              required: true,
-            },
-            {
-              id: uuidv4(),
-              component: 'textField',
-              label: 'Last name',
+              label: 'Entity Name',
               value: '',
               validation: null,
               required: true,

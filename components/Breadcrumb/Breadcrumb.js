@@ -80,10 +80,10 @@ const Breadcrumb = ({ activeId, data }) => {
                 <p>{step.subtext}</p>
               </div>
               <div className="circle-section">
-                <BigCircleStep activeStep={active} link={step.id} />
+                <BigCircleStep activeStep={active} stepLink={step.step} />
               </div>
               <div className="small-circle-section">
-                <SmallCircleStep activeStep={active} link={step.id} />
+                <SmallCircleStep activeStep={active} stepLink={step.step} />
               </div>
             </BreadcrumbElement>
           );

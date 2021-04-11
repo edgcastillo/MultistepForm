@@ -83,6 +83,7 @@ const Step = ({ elem }) => {
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
   const handleClickNext = () => {
+    console.log(userData);
     if (
       (userChoice && pageIndex === 1) ||
       (userData.status === 'valid' && pageIndex !== pageCount)
@@ -91,8 +92,8 @@ const Step = ({ elem }) => {
       router.push(`/step/${nextPage}`);
     } else {
       const message =
-        pageIndex === 1 ? 'Please make a selection' : 'All fields are required';
-      dispatch(displayToast({ message }));
+        pageIndex === 1 ? 'Please make a selection' : 'Fields required: ';
+      dispatch(displayToast(message));
     }
   };
   const handleClickBack = () => {
