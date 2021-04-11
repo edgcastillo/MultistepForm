@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import styled, { ThemeContext, css } from 'styled-components';
 import { userSaveData } from '../../features/userDataSlice';
-import Cookies from 'js-cookie';
-import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const Select = styled.select`
   height: 50px;
@@ -37,22 +36,28 @@ const Label = styled.p`
   margin-top: 30px;
 `;
 
-const SelectField = ({ elem }) => {
-  const { id: elemId, value, required, label, validation } = elem;
+const SelectField = ({ elem, fieldPropValue }) => {
   const dispatch = useDispatch();
+
+  // props from config object
+  const { id: elemId, value, required, label, validation } = elem;
+
   const theme = useContext(ThemeContext);
+
+  // nextjs
   const router = useRouter();
   const { id } = router.query;
+
+  // useState
   const [isSelectFieldValid, setSelectFieldValid] = useState(false);
   const [isSelectFieldTouched, setSelectFieldTouched] = useState(false);
-  const [optionsValue, setOptionsValue] = useState(
-    () => Cookies.get(`${elemId}`) || value
-  );
-  const clearCookieTime = setTimeForCookies();
+  const [optionsValue, setOptionsValue] = useState(fieldPropValue || value);
+
+  // regex
   const pattern = validation ? validation : /\S+/;
   const regex = new RegExp(pattern, 'g');
+
   useEffect(() => {
-    Cookies.set(`${elemId}`, optionsValue, { expires: clearCookieTime });
     const isValid = regex.test(optionsValue);
     if (isValid && required) {
       setSelectFieldValid(true);
@@ -63,6 +68,7 @@ const SelectField = ({ elem }) => {
       userSaveData({
         elemId,
         id,
+        isValid: isSelectFieldValid,
         value: optionsValue,
         isRequired: required,
       })
@@ -76,10 +82,18 @@ const SelectField = ({ elem }) => {
         isValid={isSelectFieldValid}
         isTouched={isSelectFieldTouched}
         value={optionsValue}
+        defaultValue=""
         onChange={(e) => setOptionsValue(e.target.value)}
         onFocus={() => setSelectFieldTouched(true)}
       >
         {elem.options.map((obj, i) => {
+          if (i === 0) {
+            return (
+              <option key={i} value="" hidden>
+                Make a selection
+              </option>
+            );
+          }
           return (
             <option key={i} value={obj.value}>
               {obj.text}
@@ -91,4 +105,14 @@ const SelectField = ({ elem }) => {
   );
 };
 
-export default SelectField;
+const mapStateToProps = (state, ownProps) => {
+  let fieldPropValue;
+  if (state.userData && state.userData.fieldsWithValue[ownProps.elem.id]) {
+    fieldPropValue = state.userData.fieldsWithValue[ownProps.elem.id].value;
+  }
+  return {
+    fieldPropValue,
+  };
+};
+
+export default connect(mapStateToProps)(SelectField);

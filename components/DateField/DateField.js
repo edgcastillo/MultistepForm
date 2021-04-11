@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { userSaveData } from '../../features/userDataSlice';
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
-import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const DatePickerComponent = styled.input`
   width: 50%;
@@ -32,19 +31,16 @@ const Label = styled.p`
   margin-top: 30px;
 `;
 
-const DatePicker = ({ elem }) => {
+const DatePicker = ({ elem, fieldPropValue }) => {
+  // props from config
   const { id: elemId, label, component, validation, required, value } = elem;
-  const [dateSelected, setDate] = useState(
-    () => Cookies.get(`${elemId}`) || value
-  );
+  const [dateSelected, setDate] = useState(fieldPropValue || value);
   const theme = useContext(ThemeContext);
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
-  const clearCookieTime = setTimeForCookies();
-  console.log(dateSelected);
+
   useEffect(() => {
-    Cookies.set(`${elemId}`, dateSelected, { expires: clearCookieTime });
     dispatch(
       userSaveData({
         elemId,
@@ -68,4 +64,14 @@ const DatePicker = ({ elem }) => {
   );
 };
 
-export default DatePicker;
+const mapStateToProps = (state, ownProps) => {
+  let fieldPropValue;
+  if (state.userData && state.userData.fieldsWithValue[ownProps.elem.id]) {
+    fieldPropValue = state.userData.fieldsWithValue[ownProps.elem.id].value;
+  }
+  return {
+    fieldPropValue,
+  };
+};
+
+export default connect(mapStateToProps)(DatePicker);

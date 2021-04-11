@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import styled, { ThemeContext, css } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { userSaveData } from '../../features/userDataSlice';
-import Cookies from 'js-cookie';
-import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const TextAreaStyles = styled.div`
   & > .textareaInput {
@@ -36,7 +35,8 @@ const Label = styled.label`
   margin-bottom: 15px;
 `;
 
-const TextArea = ({ elem }) => {
+const TextArea = ({ elem, fieldPropValue }) => {
+  // props from config object
   const {
     id: elemId,
     label,
@@ -46,22 +46,25 @@ const TextArea = ({ elem }) => {
     required,
     value,
   } = elem;
+
+  const dispatch = useDispatch();
+
+  // use state
   const [isTextAreaFieldValid, setTextAreaFieldValid] = useState(false);
   const [isTextAreaFieldTouched, setTextAreaFieldTouched] = useState(false);
-  const [textAreaValue, setTextAreaValue] = useState(
-    () => Cookies.get(`${elemId}`) || value
-  );
+  const [textAreaValue, setTextAreaValue] = useState(fieldPropValue || value);
+
+  // nextjs and theme
   const theme = useContext(ThemeContext);
   const router = useRouter();
   const { id } = router.query;
-  const dispatch = useDispatch();
-  const clearCookieTime = setTimeForCookies();
+
+  // var utils
   const pattern = validation ? validation : /\S+/;
   const regex = new RegExp(pattern, 'g');
+
   useEffect(() => {
-    Cookies.set(`${elemId}`, textAreaValue, { expires: clearCookieTime });
     const isValid = regex.test(textAreaValue);
-    console.log(isValid);
     if (isValid && required) {
       setTextAreaFieldValid(true);
     } else if (!isValid && required) {
@@ -97,4 +100,14 @@ const TextArea = ({ elem }) => {
   );
 };
 
-export default TextArea;
+const mapStateToProps = (state, ownProps) => {
+  let fieldPropValue;
+  if (state.userData && state.userData.fieldsWithValue[ownProps.elem.id]) {
+    fieldPropValue = state.userData.fieldsWithValue[ownProps.elem.id].value;
+  }
+  return {
+    fieldPropValue,
+  };
+};
+
+export default connect(mapStateToProps)(TextArea);

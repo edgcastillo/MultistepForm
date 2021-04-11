@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   closeToast,
   userShowToastSelector,
+  userToastMessageSelector,
 } from '../../features/userDataSlice';
 import styled, { ThemeContext, keyframes } from 'styled-components';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -61,6 +62,7 @@ const Toast = () => {
   const dispatch = useDispatch();
   const theme = useContext(ThemeContext);
   const showToast = useSelector(userShowToastSelector);
+  const message = useSelector(userToastMessageSelector);
   let timer;
   function handleTimeout() {
     timer = setTimeout(() => {
@@ -82,7 +84,7 @@ const Toast = () => {
         <div className="icon-section">
           <ErrorIcon style={{ color: 'white' }} />
         </div>
-        <p>Validation Error</p>
+        <p>{message}</p>
       </ToastContainer>
     )
   );

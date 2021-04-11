@@ -15,7 +15,11 @@ import {
   selectPageCount,
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
-import { userDataSelector, displayToast } from '../../features/userDataSlice';
+import {
+  userDataSelector,
+  displayToast,
+  clearErrors,
+} from '../../features/userDataSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -79,14 +83,16 @@ const Step = ({ elem }) => {
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
   const handleClickNext = () => {
-    console.log(userData);
     if (
       (userChoice && pageIndex === 1) ||
       (userData.status === 'valid' && pageIndex !== pageCount)
     ) {
+      dispatch(clearErrors());
       router.push(`/step/${nextPage}`);
     } else {
-      dispatch(displayToast());
+      const message =
+        pageIndex === 1 ? 'Please make a selection' : 'All fields are required';
+      dispatch(displayToast({ message }));
     }
   };
   const handleClickBack = () => {

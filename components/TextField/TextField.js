@@ -1,10 +1,9 @@
 import React, { useEffect, useContext, useState } from 'react';
+import { connect } from 'react-redux';
 import styled, { ThemeContext, css } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { userSaveData } from '../../features/userDataSlice';
-import Cookies from 'js-cookie';
-import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const TextFieldStyles = styled.div`
   & > input {
@@ -42,29 +41,27 @@ const Label = styled.p`
   margin-top: 30px;
 `;
 
-const TextField = ({ elem }) => {
-  // Props
+const TextField = ({ elem, fieldPropValue }) => {
+  // props from config object
   const { id: elemId, label, component, validation, required, value } = elem;
+
   const theme = useContext(ThemeContext);
 
   // useState
   const [isFieldValid, setFieldValid] = useState(false);
   const [isFieldTouched, setFieldTouched] = useState(false);
-  const [fieldValue, setFieldValue] = useState(
-    () => Cookies.get(`${elemId}`) || value
-  );
+  const [fieldValue, setFieldValue] = useState(fieldPropValue || value);
 
   // Redux and NextJS
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
 
-  const clearCookieTime = setTimeForCookies();
+  // const clearCookieTime = setTimeForCookies();
   const pattern = validation ? validation : /\S+/;
   const regex = new RegExp(pattern, 'g');
 
   useEffect(() => {
-    Cookies.set(`${elemId}`, fieldValue, { expires: clearCookieTime });
     const isValid = regex.test(fieldValue);
     if (isValid && required) {
       setFieldValid(true);
@@ -102,4 +99,14 @@ const TextField = ({ elem }) => {
   );
 };
 
-export default TextField;
+const mapStateToProps = (state, ownProps) => {
+  let fieldPropValue;
+  if (state.userData && state.userData.fieldsWithValue[ownProps.elem.id]) {
+    fieldPropValue = state.userData.fieldsWithValue[ownProps.elem.id].value;
+  }
+  return {
+    fieldPropValue,
+  };
+};
+
+export default connect(mapStateToProps)(TextField);

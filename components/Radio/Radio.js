@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
 import { userSaveSelection } from '../../features/userDataSlice';
 import styled, { ThemeContext, css } from 'styled-components';
-import Cookies from 'js-cookie';
 import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const Legend = styled.p`
@@ -40,16 +39,12 @@ const Input = styled.input`
   visibility: hidden;
 `;
 
-const Radio = ({ elem }) => {
+const Radio = ({ elem, userChoice }) => {
   const { value } = elem;
   const dispatch = useDispatch();
-  const [radioValue, setRadioValue] = useState(
-    () => Cookies.get('radio') || value
-  );
+  const [radioValue, setRadioValue] = useState(userChoice);
   const theme = useContext(ThemeContext);
-  const clearCookieTime = setTimeForCookies();
   useEffect(() => {
-    Cookies.set('radio', radioValue, { expires: clearCookieTime });
     dispatch(userSaveSelection({ radioValue }));
   }, [radioValue]);
   const handleChange = (e) => {
@@ -76,4 +71,10 @@ const Radio = ({ elem }) => {
   );
 };
 
-export default Radio;
+const mapStateToProps = (state) => {
+  return {
+    userChoice: state.userData.userChoice,
+  };
+};
+
+export default connect(mapStateToProps)(Radio);
