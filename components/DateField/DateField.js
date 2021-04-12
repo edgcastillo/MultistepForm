@@ -67,8 +67,8 @@ const DatePicker = ({ elem, fieldPropValue }) => {
     }
     dispatch(
       userSaveData({
-        elemId,
         id,
+        elemId,
         label,
         isValid,
         value: dateSelected,

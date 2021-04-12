@@ -115,7 +115,7 @@ export const data = {
               component: 'textField',
               label: 'Tax ID',
               value: '',
-              validation: /^\d{3}-\d{2}-\d{4}|\d{2}-\d{7}$/,
+              validation: /^(\d{3}-\d{2}-\d{4}|\d{2}-\d{7})$/,
               required: true,
             },
           ],

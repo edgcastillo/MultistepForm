@@ -66,8 +66,9 @@ const SelectField = ({ elem, fieldPropValue }) => {
     }
     dispatch(
       userSaveData({
-        elemId,
         id,
+        elemId,
+        label,
         isValid: isSelectFieldValid,
         value: optionsValue,
         isRequired: required,

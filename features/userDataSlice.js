@@ -17,14 +17,17 @@ export const userDataSlice = createSlice({
       state.userChoice = payload.radioValue;
     },
     userSaveData: (state, { payload }) => {
+      // payload to map of fields with values
       state.fieldsWithValue[payload.elemId] = payload;
+      // return new array from the state with all the fields except the one being passed as a payload
       const newArr = state.entity.filter((field) => {
         return field.elemId !== payload.elemId && field.id === payload.id;
       });
-      if (payload.value) {
-      }
+
+      // push new updated field to array
       newArr.push(payload);
       state.entity = [...newArr];
+
       const invalidFields = state.entity.filter((field) => {
         return field.isRequired === true && field.isValid === false;
       });
@@ -35,6 +38,7 @@ export const userDataSlice = createSlice({
         state.stepErrorsId = payload.id;
       } else if (invalidFields.length === 0 && state.userChoice !== null) {
         state.status = 'valid';
+        state.errors = {};
         state.stepErrorsId = '';
       }
     },
@@ -46,10 +50,6 @@ export const userDataSlice = createSlice({
       state.toggleToast = false;
       state.toastMessage = '';
     },
-    clearErrors: (state, action) => {
-      state.errors = {};
-      state.status = null;
-    },
   },
 });
 
@@ -58,7 +58,6 @@ export const {
   userSaveSelection,
   displayToast,
   closeToast,
-  clearErrors,
 } = userDataSlice.actions;
 
 export const userDataSelector = (state) => state.userData;

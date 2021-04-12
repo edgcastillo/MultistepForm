@@ -72,8 +72,9 @@ const TextArea = ({ elem, fieldPropValue }) => {
     }
     dispatch(
       userSaveData({
-        elemId,
         id,
+        elemId,
+        label,
         isValid: isValid,
         value: textAreaValue,
         isRequired: required,

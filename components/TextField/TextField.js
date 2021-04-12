@@ -70,9 +70,9 @@ const TextField = ({ elem, fieldPropValue }) => {
     }
     dispatch(
       userSaveData({
+        id,
         elemId,
         label,
-        id,
         isValid: isValid,
         value: fieldValue,
         isRequired: required,

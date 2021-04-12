@@ -15,11 +15,7 @@ import {
   selectPageCount,
   selectBreadcrumbData,
 } from '../../features/paginationSlice';
-import {
-  userDataSelector,
-  displayToast,
-  clearErrors,
-} from '../../features/userDataSlice';
+import { userDataSelector, displayToast } from '../../features/userDataSlice';
 
 const MainContentStyles = styled.main`
   display: grid;
@@ -83,12 +79,13 @@ const Step = ({ elem }) => {
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
   const handleClickNext = () => {
-    if (
-      (userChoice && pageIndex === 1) ||
-      (userData.status === 'valid' && pageIndex !== pageCount)
-    ) {
-      dispatch(clearErrors());
+    const isChoiceMade = userChoice && pageIndex === 1;
+    const isValidStatus = userData.status === 'valid';
+    const lastStepComplete = pageIndex === pageCount;
+    if (isChoiceMade || (isValidStatus && !lastStepComplete)) {
       router.push(`/step/${nextPage}`);
+    } else if (isValidStatus && lastStepComplete) {
+      router.push(`/complete`);
     } else {
       const message =
         pageIndex === 1

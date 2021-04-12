@@ -45,7 +45,7 @@ const ToastContainer = styled.div`
   justify-content: center;
   grid-template-columns: 50px 1fr;
   color: ${({ primary }) => primary};
-  animation: ${fadein} 0.5s, ${fadeout} 0.5s 1500ms;
+  animation: ${fadein} 0.5s, ${fadeout} 0.5s 2000ms;
   & > p {
     justify-self: center;
   }
@@ -67,7 +67,7 @@ const Toast = () => {
   function handleTimeout() {
     timer = setTimeout(() => {
       dispatch(closeToast());
-    }, 1500);
+    }, 2000);
   }
 
   useEffect(() => {
