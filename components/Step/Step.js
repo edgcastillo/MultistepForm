@@ -91,7 +91,9 @@ const Step = ({ elem }) => {
       router.push(`/step/${nextPage}`);
     } else {
       const message =
-        pageIndex === 1 ? 'Please make a selection' : 'Fields required: ';
+        pageIndex === 1
+          ? 'Please make a selection'
+          : 'Fill the required fields';
       dispatch(displayToast(message));
     }
   };
