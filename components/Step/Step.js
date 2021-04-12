@@ -83,7 +83,6 @@ const Step = ({ elem }) => {
     pageIndex === parseInt(pageCount) ? 'Complete' : 'Next Step';
 
   const handleClickNext = () => {
-    console.log(userData);
     if (
       (userChoice && pageIndex === 1) ||
       (userData.status === 'valid' && pageIndex !== pageCount)
