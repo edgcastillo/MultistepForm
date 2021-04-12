@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import styled, { css, ThemeContext } from 'styled-components';
 import PersonIcon from '@material-ui/icons/Person';
+import { useRouter } from 'next/router';
 
 // TODO: This could be another button, maybe refactor later
 
@@ -11,6 +12,9 @@ const BigCircleStepStyles = styled.div`
   z-index: 0;
   color: ${({ border }) => border};
   background: ${({ unactive }) => unactive};
+  &:hover {
+    cursor: pointer;
+  }
   ${(props) =>
     props.activeStep &&
     css`
@@ -48,10 +52,18 @@ export const SmallCircleStep = ({ activeStep }) => {
   return <SmallCircleStyles {...theme} activeStep={activeStep} />;
 };
 
-export const BigCircleStep = ({ activeStep }) => {
+export const BigCircleStep = ({ activeStep, stepLink }) => {
   const theme = useContext(ThemeContext);
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/step/${stepLink}`);
+  };
   return (
-    <BigCircleStepStyles {...theme} activeStep={activeStep}>
+    <BigCircleStepStyles
+      {...theme}
+      activeStep={activeStep}
+      onClick={() => handleClick()}
+    >
       <span className="icon">
         <PersonIcon />
       </span>

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { userSaveSelection } from '../../features/userDataSlice';
 import styled, { ThemeContext, css } from 'styled-components';
-import setTimeForCookies from '../../utils/setTimeForCookies';
 
 const Legend = styled.p`
   font-size: 18px;

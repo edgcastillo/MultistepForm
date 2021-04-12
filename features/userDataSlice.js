@@ -40,7 +40,7 @@ export const userDataSlice = createSlice({
     },
     displayToast: (state, { payload }) => {
       state.toggleToast = true;
-      state.toastMessage = payload.message;
+      state.toastMessage = payload;
     },
     closeToast: (state, action) => {
       state.toggleToast = false;
